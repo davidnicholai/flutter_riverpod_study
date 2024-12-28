@@ -11,16 +11,16 @@ class ProductListPage extends ConsumerWidget {
     final state = ref.watch(productListControllerProvider);
     return Scaffold(
       body: SafeArea(
-        child: switch (state) {
-          AsyncData(:final value) => _DataWidget(products: value),
-          AsyncError(:final error, :final stackTrace) => _ErrorWidget(
-              error: error,
-              stackTrace: stackTrace,
-              onRetryTapped: () =>
-                  ref.invalidate(productListControllerProvider),
-            ),
-          _ => const _LoadingWidget(),
-        },
+        child: state.when(
+          data: (value) => _DataWidget(products: value),
+          error: (error, stackTrace) => _ErrorWidget(
+            error: error,
+            stackTrace: stackTrace,
+            onRetryTapped: () => ref.invalidate(productListControllerProvider),
+          ),
+          loading: () => const _LoadingWidget(),
+          skipLoadingOnRefresh: false,
+        ),
       ),
     );
   }
