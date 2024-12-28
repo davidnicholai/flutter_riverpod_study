@@ -12,7 +12,10 @@ class ProductListPage extends ConsumerWidget {
     return Scaffold(
       body: SafeArea(
         child: state.when(
-          data: (value) => _DataWidget(products: value),
+          data: (value) => _DataWidget(
+            products: value,
+            onRefresh: () => ref.refresh(productListControllerProvider.future),
+          ),
           error: (error, stackTrace) => _ErrorWidget(
             error: error,
             stackTrace: stackTrace,
@@ -28,38 +31,42 @@ class ProductListPage extends ConsumerWidget {
 
 class _DataWidget extends StatelessWidget {
   final List<Product> products;
+  final RefreshCallback onRefresh;
 
-  const _DataWidget({required this.products});
+  const _DataWidget({required this.products, required this.onRefresh});
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 1.0 / 1.4,
+    return RefreshIndicator(
+      onRefresh: onRefresh,
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1.0 / 1.4,
+        ),
+        itemCount: products.length,
+        itemBuilder: (context, index) {
+          final product = products[index];
+          return Card(
+            child: Column(
+              children: [
+                AspectRatio(
+                  aspectRatio: 1.0,
+                  child: Image.network(product.imageUrl),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  product.name,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text('PHP ${product.price.toString()}'),
+              ],
+            ),
+          );
+        },
       ),
-      itemCount: products.length,
-      itemBuilder: (context, index) {
-        final product = products[index];
-        return Card(
-          child: Column(
-            children: [
-              AspectRatio(
-                aspectRatio: 1.0,
-                child: Image.network(product.imageUrl),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                product.name,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text('PHP ${product.price.toString()}'),
-            ],
-          ),
-        );
-      },
     );
   }
 }
