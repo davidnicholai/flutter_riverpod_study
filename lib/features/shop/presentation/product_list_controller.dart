@@ -7,5 +7,6 @@ part 'product_list_controller.g.dart';
 
 @riverpod
 FutureOr<List<Product>> productListController(Ref ref) async {
-  return await ref.watch(getProductsProvider.future);
+  final repository = ref.watch(productRepositoryProvider);
+  return await repository.getProducts();
 }

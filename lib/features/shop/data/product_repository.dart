@@ -5,7 +5,20 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'product_repository.g.dart';
 
+class ProductRepository {
+  final ProductRemoteDataFetcher _productRemoteDataFetcher;
+
+  ProductRepository(
+      {required ProductRemoteDataFetcher productRemoteDataFetcher})
+      : _productRemoteDataFetcher = productRemoteDataFetcher;
+
+  Future<List<Product>> getProducts() {
+    return _productRemoteDataFetcher.fetchProducts();
+  }
+}
+
 @riverpod
-Future<List<Product>> getProducts(Ref ref) async {
-  return await ref.watch(fetchProductsProvider.future);
+ProductRepository productRepository(Ref ref) {
+  final remoteDataFetcher = ref.watch(productRemoteDataFetcherProvider);
+  return ProductRepository(productRemoteDataFetcher: remoteDataFetcher);
 }
