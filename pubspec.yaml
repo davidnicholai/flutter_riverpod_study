@@ -42,6 +42,7 @@ dependencies:
   flutter_hooks: ^0.20.5
   hooks_riverpod: ^2.6.1
   logger: ^2.5.0
+  go_router: ^14.6.2
 
 dev_dependencies:
   flutter_test:
