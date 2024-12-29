@@ -4,16 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kratos/features/shop/domain/product.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'product_remote_datafetcher.g.dart';
+part 'product_remote_repository.g.dart';
 
-class ProductRemoteDataFetcher {
-  const ProductRemoteDataFetcher();
+class ProductRemoteRepository {
+  const ProductRemoteRepository();
 
   /// Fetches the list of products from the remote server.
   ///
   /// Throws:
   /// - [Exception] A random exception.
-  Future<List<Product>> fetchProducts() async {
+  Future<List<Product>> getProducts() async {
     await Future.delayed(const Duration(seconds: 2));
 
     final rand = Random().nextInt(10) + 1;
@@ -51,6 +51,6 @@ class ProductRemoteDataFetcher {
 }
 
 @riverpod
-ProductRemoteDataFetcher productRemoteDataFetcher(Ref ref) {
-  return const ProductRemoteDataFetcher();
+ProductRemoteRepository productRemoteRepository(Ref ref) {
+  return const ProductRemoteRepository();
 }
