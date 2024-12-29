@@ -10,6 +10,7 @@ class ProductRemoteRepository {
   const ProductRemoteRepository();
 
   /// Fetches the list of products from the remote server.
+  /// Transforms the DTOs into domain models.
   ///
   /// Throws:
   /// - [Exception] A random exception.
@@ -20,6 +21,8 @@ class ProductRemoteRepository {
     if (rand.isEven) {
       throw Exception('Failed to fetch products');
     }
+
+    // TODO: Simulate a transformation from DTO to domain model.
 
     return <Product>[
       Product(
